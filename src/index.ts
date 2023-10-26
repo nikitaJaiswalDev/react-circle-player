@@ -1,3 +1,3 @@
-import MyCounter from './components/App'
+import ReactCirclePlayer from './components/App'
 
-export { MyCounter }
+export { ReactCirclePlayer }
