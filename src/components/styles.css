@@ -1,11 +1,11 @@
-.rpcc-player {
+.rc-player {
     --PI: 3.14159265358979;
     --rpcc-ring-radius: calc((var(--rpcc-size) / 2) - (var(--rpcc-progress-size) / 2));
     --rpcc-ring-circum: calc(var(--PI) * var(--rpcc-ring-radius) * 2);
     --rpcc-play-button-size: calc(var(--rpcc-size) - (var(--rpcc-progress-size) * 2));
 }
 
-.rpcc-player-inner {
+.rc-player-inner {
     display: flex;
     height: var(--rpcc-size);
     width: var(--rpcc-size);
@@ -14,7 +14,7 @@
     align-items: center;
 }
 
-.rpcc-ring-container {
+.rc-ring-container {
     position: absolute;
     top: 0;
     right: 0;
@@ -23,7 +23,7 @@
     transform: rotate(-90deg);
 }
 
-.rpcc-ring {
+.rc-ring {
     cx: calc(var(--rpcc-size) / 2);
     cy: calc(var(--rpcc-size) / 2);
     fill: none;
@@ -34,12 +34,12 @@
     stroke-dashoffset: 0;
 }
 
-.rpcc-ring__duration {
+.rc-ring__duration {
     stroke: var(--rpcc-ring-duration-color, var(--rpcc-color));
     opacity: 0.1;
 }
 
-.rpcc-ring__loaded {
+.rc-ring__loaded {
     stroke: var(--rpcc-ring--color, var(--rpcc-color));
     opacity: 0.2;
     stroke-dashoffset: calc(var(--rpcc-ring-circum) * (1 - var(--rpcc-progress-loaded)));
@@ -51,7 +51,7 @@
     stroke-dashoffset: calc(var(--rpcc-ring-circum) * (1 - var(--rpcc-progress-played)));
 }
 
-.rpcc-play-button {
+.rc-play-button {
     display: block;
     margin: 0;
     padding: 0;
@@ -64,11 +64,11 @@
     cursor: pointer;
 }
 
-.rpcc-play-button:active {
+.rc-play-button:active {
     opacity: 0.9;
 }
 
-.rpcc-play-icon {
+.rc-play-icon {
     display: inline-block;
     box-sizing: border-box;
     width: 0;
@@ -80,7 +80,7 @@
     border-width: calc(var(--rpcc-play-button-size) * 0.125) 0 calc(var(--rpcc-play-button-size) * 0.125) calc(var(--rpcc-play-button-size) * 0.25);
 }
 
-.rpcc-play-icon.pause {
+.rc-play-icon.pause {
     margin-left: 0;
     border-style: double;
     border-width: 0px 0 0px calc(var(--rpcc-play-button-size) * 0.25);
