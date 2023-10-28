@@ -17,7 +17,7 @@ You will need to integrate this component with another media player library.
 ```jsx
 import React, { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import CircleControls from 'react-circle-player'
+import ReactCirclePlayer from 'react-circle-player'
 import 'react-circle-player/lib/styles.css'
 
 const Example = () => {
@@ -45,7 +45,7 @@ const Example = () => {
         onProgress={setPlayerState}
         onEnded={() => setPlaying(false)}
       />
-      <CircleControls
+      <ReactCirclePlayer
         played={playerState.played}
         loaded={playerState.loaded}
         playing={playing}
