@@ -1,53 +1,144 @@
-import React, { useState, useRef } from 'react'
-import ReactPlayer from 'react-player'
-import './styles.css'
+import React, { useRef } from 'react'
+import PropTypes from 'prop-types'
 
-type Props = {
-  value?: number
+interface AriaLabels {
+  PLAY_BUTTON: string
 }
 
-const ReactCirclePlayer = ({ value = 0 }: Props) => {
-  const playerRef = useRef<ReactPlayer>(null)
+interface Props {
+  ariaLabels?: AriaLabels | null
+  color?: string
+  icon?: React.ReactNode
+  iconColor?: string
+  loaded?: number
+  progressSize?: number
+  played?: number
+  playing: boolean
+  size?: number
+  onSeek?: (rotation: number) => void
+  onTogglePlaying?: () => void
+}
+
+const generateStyles = (variables: { [key: string]: string | number }) => {
+  const style: any = {}
+  for (const key in variables) {
+    style[key] = variables[key]
+  }
+  return style
+}
+
+const getCircleCenterCoords = ({ x, y, width }: { x: number; y: number; width: number }) => {
+  const radius = width / 2
+  return { x: x + radius, y: y + radius }
+}
+
+const getRotationForPoint = (vertex: { x: number; y: number }, point: { x: number; y: number }) => {
+  const adjacent = vertex.y - point.y
+  const opposite = point.x - vertex.x
+  const centralAngle = Math.atan(opposite / adjacent)
+  const mod = point.y > vertex.y ? Math.PI : 2 * Math.PI
+  const rotation = centralAngle + mod > 2 * Math.PI ? centralAngle : centralAngle + mod
+  return rotation / (2 * Math.PI)
+}
+
+const getDefaultLabels = (playing: boolean) => ({
+  PLAY_BUTTON: playing ? 'Pause' : 'Play',
+})
+
+const PlayIcon: React.FC<{ playing: boolean }> = ({ playing }) => (
+  <span className={`rc-play-icon${playing ? ' pause' : ''}`} />
+)
+
+const ReactCirclePlayer = ({
+  ariaLabels,
+  color = '#ec2b52',
+  icon,
+  iconColor = '#e4e1da',
+  loaded = 0,
+  progressSize = 12,
+  played = 0,
+  playing,
+  size = 158,
+  onSeek,
+  onTogglePlaying,
+}: Props) => {
+  const playerRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const [counter, setCounter] = useState(value)
-  const [isPlaying, setIsPlaying] = useState(false)
+  const labels = ariaLabels || getDefaultLabels(playing)
 
-  const onMinus = () => {
-    setCounter((prev) => prev - 1)
+  const cssVariables = {
+    '--rc-color': color,
+    '--rc-play-icon-color': iconColor || '',
+    '--rc-progress-loaded': loaded,
+    '--rc-progress-played': played,
+    '--rc-progress-size': `${progressSize}px`,
+    '--rc-size': `${size}px`,
   }
+  const customStyles = generateStyles(cssVariables)
 
-  const onPlus = () => {
-    setCounter((prev) => prev + 1)
-  }
+  const onSeekClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (buttonRef.current && buttonRef.current.contains(e.target as Node)) {
+      return
+    }
 
-  const onClickAudioEnded = () => {
-    setIsPlaying(false)
+    const point = { x: e.clientX, y: e.clientY }
+    const playerRect = playerRef.current?.getBoundingClientRect()
+    if (playerRect) {
+      const vertex = getCircleCenterCoords(playerRect)
+      onSeek && onSeek(getRotationForPoint(vertex, point))
+    }
   }
 
   return (
-    <div>
-      <h1>Counter: {counter}</h1>
-      <button onClick={onMinus}>-</button>
-      <button onClick={onPlus}>+</button>
-      <ReactPlayer
-        ref={playerRef}
-        url='https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3'
-        playing={isPlaying}
-        onEnded={onClickAudioEnded}
-      >
-        <div className='rc-player'>
-          <div className='rc-player-inner'>
-            <svg className='rc-ring-container'>
-              <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__duration' />
-              <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__loaded' />
-              <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__played' />
-            </svg>
-            <button ref={buttonRef} type='button' className='rc-play-button' />
-          </div>
-        </div>
-      </ReactPlayer>
+    <div className='rc-player' style={customStyles} onClick={onSeek && onSeekClick}>
+      <div ref={playerRef} className='rc-player-inner'>
+        <svg className='rc-ring-container'>
+          <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__duration' />
+          <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__loaded' />
+          <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__played' />
+        </svg>
+        <button
+          ref={buttonRef}
+          type='button'
+          className='rc-play-button'
+          aria-label={labels.PLAY_BUTTON}
+          onClick={onTogglePlaying}
+        >
+          {icon || <PlayIcon playing={playing} />}
+        </button>
+      </div>
     </div>
   )
+}
+
+ReactCirclePlayer.propTypes = {
+  ariaLabels: PropTypes.shape({
+    PLAY_BUTTON: PropTypes.string,
+  }),
+  color: PropTypes.string,
+  icon: PropTypes.node,
+  iconColor: PropTypes.string,
+  loaded: PropTypes.number,
+  progressSize: PropTypes.number,
+  played: PropTypes.number,
+  playing: PropTypes.bool.isRequired,
+  size: PropTypes.number,
+  onSeek: PropTypes.func,
+  onTogglePlaying: PropTypes.func,
+}
+
+ReactCirclePlayer.defaultProps = {
+  ariaLabels: null,
+  color: '#ec2b52',
+  icon: null,
+  iconColor: '#e4e1da',
+  loaded: 0,
+  progressSize: 12,
+  played: 0,
+  playing: false,
+  size: 150,
+  onSeek: null,
+  onTogglePlaying: null,
 }
 
 export default ReactCirclePlayer
