@@ -1,6 +1,6 @@
 # React Circle Player
 
-![color picker](https://www.awesomescreenshot.com/video/21994133?key=569c8339e5702047d654bce93df2992f)
+![color picker](https://bobbyhadz.com/images/blog/change-vscode-integrated-terminal-colors/hover-over-color.gif)
 
 ## Install
 
