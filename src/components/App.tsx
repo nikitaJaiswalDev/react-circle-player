@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
+import { CiPlay1, CiPause1 } from 'react-icons/ci'
 
 interface AriaLabels {
   PLAY_BUTTON: string
@@ -17,6 +18,7 @@ interface Props {
   size?: number
   onSeek?: (rotation: number) => void
   onTogglePlaying?: () => void
+  title: string
 }
 
 const generateStyles = (variables: { [key: string]: string | number }) => {
@@ -45,22 +47,25 @@ const getDefaultLabels = (playing: boolean) => ({
   PLAY_BUTTON: playing ? 'Pause' : 'Play',
 })
 
-const PlayIcon: React.FC<{ playing: boolean }> = ({ playing }) => (
-  <span className={`rc-play-icon${playing ? ' pause' : ''}`} />
+const PlayIcon: React.FC<{ playing: boolean, iconColor: string }> = ({ playing, iconColor }) => (
+  <span className={`rc-play-icon${playing ? ' pause' : ''}`}>
+    {playing ? <CiPause1 color={iconColor} fontSize={45} /> : <CiPlay1 color={iconColor} fontSize={45} />}
+  </span>
 )
 
 const ReactCirclePlayer = ({
   ariaLabels,
   color = '#ec2b52',
   icon,
-  iconColor = '#e4e1da',
+  iconColor = '#ffffff',
   loaded = 0,
   progressSize = 12,
   played = 0,
   playing,
-  size = 158,
+  size = 230,
   onSeek,
   onTogglePlaying,
+  title,
 }: Props) => {
   const playerRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -97,15 +102,18 @@ const ReactCirclePlayer = ({
           <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__loaded' />
           <circle shapeRendering='geometricPrecision' className='rc-ring rc-ring__played' />
         </svg>
-        <button
-          ref={buttonRef}
-          type='button'
-          className='rc-play-button'
-          aria-label={labels.PLAY_BUTTON}
-          onClick={onTogglePlaying}
-        >
-          {icon || <PlayIcon playing={playing} />}
-        </button>
+        <div className='rc-button-container'>
+          <button
+            ref={buttonRef}
+            type='button'
+            className='rc-play-button'
+            aria-label={labels.PLAY_BUTTON}
+            onClick={onTogglePlaying}
+          >
+            {icon || <PlayIcon playing={playing} iconColor={iconColor} />}
+          </button>
+          <h5 className='rc-title'>{title}</h5>
+        </div>
       </div>
     </div>
   )
@@ -125,20 +133,22 @@ ReactCirclePlayer.propTypes = {
   size: PropTypes.number,
   onSeek: PropTypes.func,
   onTogglePlaying: PropTypes.func,
+  title: PropTypes.string,
 }
 
 ReactCirclePlayer.defaultProps = {
   ariaLabels: null,
   color: '#ec2b52',
   icon: null,
-  iconColor: '#e4e1da',
+  iconColor: '#ffffff',
   loaded: 0,
   progressSize: 12,
   played: 0,
   playing: false,
-  size: 150,
+  size: 230,
   onSeek: null,
   onTogglePlaying: null,
+  title: 'Title',
 }
 
 export default ReactCirclePlayer

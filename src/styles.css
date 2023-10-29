@@ -64,24 +64,24 @@
     cursor: pointer;
 }
 
-.rc-play-button:active {
-    opacity: 0.9;
-}
-
 .rc-play-icon {
+    position: relative;
+    z-index: 2;
     display: inline-block;
-    box-sizing: border-box;
-    width: 0;
-    height: calc(var(--rc-play-button-size) * 0.25);
-    margin-left: calc(var(--rc-play-button-size) * 0.04166666667);
-    border-color: transparent transparent transparent var(--rc-play-icon-color, #202020);
-    transition: 100ms all ease;
-    border-style: solid;
-    border-width: calc(var(--rc-play-button-size) * 0.125) 0 calc(var(--rc-play-button-size) * 0.125) calc(var(--rc-play-button-size) * 0.25);
 }
 
 .rc-play-icon.pause {
     margin-left: 0;
-    border-style: double;
-    border-width: 0px 0 0px calc(var(--rc-play-button-size) * 0.25);
+}
+
+.rc-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
