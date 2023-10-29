@@ -47,7 +47,7 @@ const getDefaultLabels = (playing: boolean) => ({
   PLAY_BUTTON: playing ? 'Pause' : 'Play',
 })
 
-const PlayIcon: React.FC<{ playing: boolean, iconColor: string }> = ({ playing, iconColor }) => (
+const PlayIcon: React.FC<{ playing: boolean; iconColor: string }> = ({ playing, iconColor }) => (
   <span className={`rc-play-icon${playing ? ' pause' : ''}`}>
     {playing ? <CiPause1 color={iconColor} fontSize={45} /> : <CiPlay1 color={iconColor} fontSize={45} />}
   </span>

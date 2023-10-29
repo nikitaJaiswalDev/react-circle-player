@@ -1,6 +1,6 @@
 {
   "name": "react-circle-player",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -49,7 +49,6 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.11.0",
     "react-player": "^2.13.0",
     "style-loader": "^3.3.3",
     "ts-jest": "^29.1.1",
@@ -61,5 +60,8 @@
   "files": [
     "lib",
     "README.md"
-  ]
+  ],
+  "dependencies": {
+    "react-icons": "^4.11.0"
+  }
 }
