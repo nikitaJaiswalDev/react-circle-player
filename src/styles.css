@@ -21,6 +21,7 @@
     height: var(--rc-size);
     width: var(--rc-size);
     transform: rotate(-90deg);
+    cursor: pointer;
 }
 
 .rc-ring {
