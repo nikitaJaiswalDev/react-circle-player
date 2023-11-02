@@ -51,6 +51,7 @@ const Example = () => {
         playing={playing}
         onSeek={onSeek}
         onTogglePlaying={() => setPlaying(!playing)}
+        title="Doughnuts"
       />
     </>
   )
